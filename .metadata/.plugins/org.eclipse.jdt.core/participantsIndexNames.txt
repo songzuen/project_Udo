@@ -1,3 +1,0 @@
-INDEX VERSION 1.131
-C:\Users\HB04-11\Desktop\Project_Udo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\692903893.index
-\Project_Udo\src\main\java

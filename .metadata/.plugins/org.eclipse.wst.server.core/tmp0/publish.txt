@@ -1,4 +1,0 @@
-#Tomcat publish data
-#Fri Aug 30 11:45:05 KST 2019
-org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\HB04-11\\.m2\\repository\\org\\springframework\\spring-web\\4.3.17.RELEASE\\spring-web-4.3.17.RELEASE.jar=C\:\\Users\\HB04-11\\Desktop\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Project_Udo\\WEB-INF\\lib\\spring-web-4.3.17.RELEASE.jar
-org.eclipse.jst.jee.server\:Project_Udo=C\:\\Users\\HB04-11\\Desktop\\sts-bundle\\pivotal-tc-server\\instances\\base-instance\\wtpwebapps\\Project_Udo
