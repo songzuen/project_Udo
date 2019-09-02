@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Modern Business - Start Bootstrap Template</title>
+
+    <!-- Custom styles for this template -->
+    <link href="http://ec2-13-209-6-70.ap-northeast-2.compute.amazonaws.com:8080/Project_Udo/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://ec2-13-209-6-70.ap-northeast-2.compute.amazonaws.com:8080/Project_Udo/css/modern-business.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top" >
+        <div class="container">
+            <a class="navbar-brand" href="index.html">우도에서 뭐하지?</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="loginForm.html" style="color: white">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a  class="nav-link" href="services.html" style="color: white">우도 식당</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://52.78.154.109:8080/udo/hotel" style="color: white">우도 숙소</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="rv_selectBike.html" style="color: white">스쿠터 예약</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="rv_update_delete.html" style="color: white">나의 스쿠터</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <h1 class="mt-4 mb-3">Rent Scooters
+        </h1>
+
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="index.html">Home</a>
+            </li>
+            <li class="breadcrumb-item active">스쿠터 예약</li>
+        </ol>
+
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 portfolio-item">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a>예약할 스쿠터를 선택해주세요</a>
+                            <hr>
+
+                            <div class="container">
+                                <form id="form">
+                                    <div class="row">
+                                        <div class="col-sm" style="text-align: center">
+                                            <div><img class="shadow p-3 mb-5 bg-white rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOiPTh0CCA0JJTy5zyRXEy_Sdcyg44nTKTcn11rAAtn9pg6Auq" width="200" height="150"></div>
+                                            <input type="radio" name="bikes" id="rv_bike" value="1" />
+                                        </div>
+                                        <div class="col-sm" style="text-align: center">
+                                            <div><img class="shadow p-3 mb-5 bg-white rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo3uaXEjEyJRBtPA2Y8A5t6j9bOnFij-kujIQNUVDrnXjxUmRV" width="200" height="150"></div>
+                                            <td><input type="radio" name="bikes" id="rv_bike" value="2" />
+                                        </div>
+                                        <div class="col-sm" style="text-align: center">
+                                            <div><img class="shadow p-3 mb-5 bg-white rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt5Fkg-LidQ9gwXTez2bPl6OpPwrLstRtpQYozkIprn54Xd0Hc" width="200" height="150"></div>
+                                            <input type="radio" name="bikes" id="rv_bike" value="3" />
+                                        </div>
+
+                                    </div>
+                                    <div style="text-align: center; margin: 40px;"><input class="btn btn-primary" type="submit" value="예약현황" /></div>
+                                </form>
+
+                                <div id="timeTable"></div>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="py-3 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+            </div>
+            <!-- /.container -->
+        </footer>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="http://ec2-13-209-6-70.ap-northeast-2.compute.amazonaws.com:8080/Project_Udo/vendor/jquery/jquery.min.js"></script>
+        <script src="http://ec2-13-209-6-70.ap-northeast-2.compute.amazonaws.com:8080/Project_Udo/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                
+                var idx = sessionStorage.getItem("idx");
+                 if(idx==null){
+                    alert('로그인 시 사용할 수 있는 서비스 입니다!');
+                    location.href = 'loginForm.html';
+                }
+                
+                $('#form').submit(function() {
+                    var bikes = document.getElementsByName('bikes');
+                    var bike; // bike 값 선택.
+                    for (var i = 0; i < bikes.length; i++) {
+                        if (bikes[i].checked) {
+                            bike = bikes[i].value;
+                        }
+                    }
+
+                    if (typeof bike == "undefined") {
+                        alert('스쿠터를 선택해주세요.');
+                    } else {
+                        showRv(bike, idx);
+                    }
+
+                    return false;
+                });
+            });
+
+            /*GET by rv_bike*/
+            function showRv(bike, idx) {
+
+                var html = '';
+                html += '<table class="table">';
+
+                $.ajax({
+                    url: 'http://ec2-13-209-6-70.ap-northeast-2.compute.amazonaws.com:8080/Project_Udo/rv/weekChk/' + bike,
+                    type: 'GET',
+                    success: function(data) {
+
+                        var weekInfoList = data.weekInfoList;
+                        var chkRvAmList = data.chkRvAmList;
+                        var chkRvPmList = data.chkRvPmList;
+
+                        for (var i = 0; i < 3; i++) {
+
+                            if (i == 0) {
+                                html += '<tr>';
+                                for (var j = 0; j < weekInfoList.length; j++) {
+
+                                    html += '<td>';
+                                    html += weekInfoList[j].month + '.';
+                                    html += weekInfoList[j].date + '.';
+                                    html += changeDay(weekInfoList[j].day);
+                                    html += '</td>';
+
+                                }
+                                html += '</tr>';
+
+                            } else if (i == 1) {
+                                html += '<tr>';
+
+                                for (var j = 0; j < weekInfoList.length; j++) {
+
+                                    var rv_date = weekInfoList[j].year + '-' + weekInfoList[j].month + '-' + weekInfoList[j].date;
+                                    var rv_time = 2;
+
+                                    html += '<td>';
+
+                                    if (chkRvAmList[j].chkRvAm == true) {
+                                        html += '<button class="btn btn-light" onclick=\"insert(\'' + rv_date + '\',' + bike + ',' + rv_time + ',' + idx + ')\">예약하기</button>';
+                                    } else {
+                                        html += '<p style="font-size: 13px; color: crimson; text-align: center; padding-top:10px;">예약완료</p>';
+                                    }
+
+                                    html += '</td>';
+                                }
+                                html += '</tr>';
+
+                            } else if (i == 2) {
+                                html += '<tr>';
+                                for (var j = 0; j < weekInfoList.length; j++) {
+
+                                    var rv_date = weekInfoList[j].year + '-' + weekInfoList[j].month + '-' + weekInfoList[j].date;
+                                    var rv_time = 3;
+
+                                    html += '<td>';
+
+                                    if (chkRvPmList[j].chkRvPm == true) {
+                                        html += '<button class="btn btn-light" onclick=\"insert(\'' + rv_date + '\',' + bike + ',' + rv_time + ',' + idx + ')\">예약하기</button>';
+                                    } else {
+                                        html += '<p style="font-size: 13px; color: crimson; text-align: center; padding-top:10px;">예약완료</p>';
+                                    }
+
+                                    html += '</td>';
+                                }
+                                html += '</tr>';
+                            }
+                        }
+                        html += '</table>';
+
+                        $('#timeTable').html(html);
+
+                    },
+
+                    error: function(e) {
+                        alert('error!')
+                    }
+
+                });
+            }
+
+            /*POST*/
+            function insert(rv_date, rv_bike, rv_time, idx) {
+
+                var result = confirm('예약하시겠습니까?');
+
+                if (result) {
+
+                    $.ajax({
+                        url: 'http://ec2-13-209-6-70.ap-northeast-2.compute.amazonaws.com:8080/Project_Udo/rv/reservation/' + idx,
+                        type: 'POST',
+                        data: {
+                            rv_date: rv_date,
+                            rv_time: rv_time,
+                            rv_bike: rv_bike
+                        },
+                        success: function(data) {
+                            if (data == "success") {
+                                alert('예약되었습니다.');
+                                showRv(rv_bike, idx);
+                            }
+                        }
+                    });
+
+                } else {
+                    alert('취소되었습니다!');
+                }
+
+            }
+
+            /*요일 데이터를 문자로 변경*/
+            function changeDay(day) {
+
+                var sDay = null;
+
+                switch (day) {
+                    case 1:
+                        sDay = "Sun";
+                        break;
+
+                    case 2:
+                        sDay = "Mon";
+                        break;
+
+                    case 3:
+                        sDay = "Tue";
+                        break;
+
+                    case 4:
+                        sDay = "Wed";
+                        break;
+
+                    case 5:
+                        sDay = "Thu";
+                        break;
+
+                    case 6:
+                        sDay = "Fri";
+                        break;
+
+                    case 7:
+                        sDay = "Sat";
+                        break;
+                }
+                return sDay;
+            }
+
+        </script>
+
+</body>
+
+</html>

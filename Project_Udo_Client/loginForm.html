@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Login Page</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- CSS Files -->
+    <link href="http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/css/material-kit.css" rel="stylesheet" />
+
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    
+    <script>
+        var patternId = /^[a-zA-Z0-9]{5,12}$/g;
+        var patternPw = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/
+    </script>
+    
+    <style>
+        .id_pw_check {
+            display: none;
+        }
+
+        .display_none {
+            display: none;
+        }
+
+        .color_red {
+            color: red;
+        }
+
+        .back_img_red {
+            border-bottom: 1px solid red;
+        }
+
+        table tr {
+            text-align: center;
+        }
+
+        #myPageTable tr td:first-child {
+            width: 25%;
+        }
+
+        table tr td input {
+            width: 90%;
+            border: 0;
+            text-align: center;
+        }
+
+        .update {
+            text-align: left;
+            width: 95%;
+        }
+
+        .profileImage {
+            width: 250px;
+            height: 250px;
+        }
+    </style>
+</head>
+
+<body class="login-page sidebar-collapse" style="background-image: url('img/video_bg.jpg')">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">우도에서 뭐하지?</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="loginForm.html" style="color: white">MyPage</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html" style="color: white">우도 식당</a></li>
+                    <li class="nav-item"><a class="nav-link" href="http://52.78.154.109:8080/udo/hotel" style="color: white">우도
+                            숙소</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rv_selectBike.html" style="color: white">스쿠터 예약</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rv_update_delete.html" style="color: white">나의 스쿠터</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <div class="page-header header-filter" style="background-image: url('img/udo.jpg'); background-size: cover; background-position: top center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 ml-auto mr-auto" id="userPage">
+                    <div class="card card-login">
+                        <form class="form" method="post" id="loginForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Login</h4>
+
+                            </div>
+
+                            <!--<p class="description text-center">Login</p>-->
+                            <div class="card-body">
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="text" class="form-control" placeholder="ID..." id="login_id" name="login_id">
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="password" class="form-control" placeholder="Password..." id="login_pw" name="login_pw">
+
+                                </div>
+                            </div>
+                            <br> <br>
+                            <div class="text-center">
+
+                                <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="로그인"><br>
+                                <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" id="getSignUpForm" onclick="getSignUpForm()">아직 계정이 없으신가요?</a>
+                                <a href="javascript:loginWithKakao();" class="btn btn-primary btn-link btn-wd btn-lg" id="kakaoLogin">카카오
+                                    계정이 있으신가요?</a> <span id="forgotAccount"> <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="forgotAccount()">계정을 분실하셨나요?</a>
+                                </span>
+
+                            </div>
+                        </form>
+
+                        <form class="form" method="post" id="signUpForm" style="display: none">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">가입하기</h4>
+                            </div>
+
+                            <article style="width: 100%; text-align: center;">* 표시는 필수사항입니다.</article>
+
+                            <div class="card-body">
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="text" class="form-control" placeholder=" * ID..." id="id" name="id"> <input type="checkbox" id="idcheck" class="id_pw_check">
+                                </div>
+                                <article id='idcheckmsg' style="font-size: 11px; display: inherit;"></article>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="password" class="form-control" placeholder="* Password..." id="pw" name="pw"> <input type="checkbox" id="pwcheck" class="id_pw_check">
+                                </div>
+                                <article id='pwcheckmsg' style="font-size: 11px; display: inherit;"></article>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="password" class="form-control" placeholder="* Confirm Password..." id="con_pw">
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="text" class="form-control" placeholder="* Name..." id="name" name="name">
+                                </div>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="email" class="form-control" placeholder="* Email..." id="email" name="email"> <input type="checkbox" id="emailcheck" class="id_pw_check">
+                                </div>
+                                <article id='emailcheckmsg' style="font-size: 11px; display: inherit;"></article>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"></div>
+                                    <input type="text" class="form-control" placeholder="Phone.." id="phone" name="phone">
+                                </div>
+                            </div>
+                            <br> <br> <br> <br>
+                            <div class="footer text-center">
+                                <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="Sign Up">
+                            </div>
+                        </form>
+                        <div class="form" style="display: none;" id="myPage">
+
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">My Page</h4>
+                            </div>
+                            <form>
+
+                                <table style="width: 100%" id="myPageTable">
+                                    <tr>
+                                        <td colspan="2" id="loginPhoto"><img id="profileImage" class="profileImage"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="hidden" id="loginIdx"></td>
+                                    </tr>zo
+                                    <tr>
+                                        <td>ID</td>
+                                        <td><input type="text" id="loginId" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>NAME</td>
+                                        <td><input type="text" id="loginName" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td><input type="text" id="loginEmail" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone</td>
+                                        <td><input type="text" id="loginPhone" readonly></td>
+                                    </tr>
+                                </table>
+                                <div class="text-center">
+                                    <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="getUpdateForm()">프로필 변경</a>
+                                    <button class="btn btn-primary btn-link btn-wd btn-lg" onclick="logout()">로그아웃</button>
+                                    <br> <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="getwithdrawForm()">회원탈퇴</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="form" style="display: none;" id="myPageKakao">
+
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">My Page(Kakao)</h4>
+                            </div>
+                            <form>
+                                <table style="width: 100%" id="myPageTable">
+                                    <tr>
+                                        <td colspan="2" id="loginPhotoKakao"><img id="kakaoImage" class="profileImage"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>NAME</td>
+                                        <td><input type="text" id="loginNameKakao" readonly></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td><input type="text" id="loginEmailKakao" readonly></td>
+                                    </tr>
+                                </table>
+                                <br>
+                                <div class="text-center">
+                                    <a href="javascript:logoutWithKakao();" class="btn btn-primary btn-link btn-wd btn-lg">로그아웃</a>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="form" style="display: none;" id="adminPage">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Admin Page</h4>
+                            </div>
+                            <form>
+                                <table style="width: 100%" id="memberInfoTable">
+                                    <tr>
+                                        <td>IDX</td>
+                                        <td>ID</td>
+                                        <td>NAME</td>
+                                        <td>Email</td>
+                                        <td>Phone</td>
+                                        <td>Verify</td>
+                                    </tr>
+                                </table>
+                                <div class="footer text-center">
+                                    <button class="btn btn-primary btn-link btn-wd btn-lg" onclick="logout()">로그아웃</button>
+                                </div>
+                            </form>
+                        </div>
+                        <form class="form" style="display: none;" id="pwCheckForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Password Check</h4>
+                            </div>
+                            <br>
+                            <article style="width: 100%; text-align: center;">본인
+                                확인을 위해 비밀번호를 입력해주세요.</article>
+                            <br>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>PW</td>
+                                    <td><input type="password" class="update form-control" id="chkPw1"></td>
+                                </tr>
+                                <tr>
+                                    <td>확인</td>
+                                    <td><input type="password" class="update form-control" id="chkPw2"></td>
+                                </tr>
+                            </table>
+                            <div class="footer text-center">
+                                <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="getUpdateForm()">뒤로가기</a> <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="확인">
+                            </div>
+                        </form>
+                        <div class="form" style="display: none;" id="updateForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Info Update</h4>
+                            </div>
+                            <form>
+                                <br>
+                                <article style="width: 100%; text-align: center;">*
+                                    타인에게 개인정보를 알려주지 마세요. *</article>
+                                <br>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td><input type="hidden" class="update form-control" id="updateIdx"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>NAME</td>
+                                        <td><input type="text" class="update form-control" id="updateName"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td><input type="text" class="update form-control" id="updateEmail"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone</td>
+                                        <td><input type="text" class="update form-control" id="updatePhone"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>사진</td>
+                                        <td><input type="file" class="update form-control" id="updatePhoto"></td>
+                                    </tr>
+                                </table>
+                                <div class="footer text-center">
+                                    <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="수정하기"><br>
+                                    <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" id="getPwCheckForm" onclick="getPwCheckForm()">비밀번호를 변경하고
+                                        싶으신가요?</a> <br>
+                                </div>
+                            </form>
+                        </div>
+                        <form class="form" style="display: none;" id="pwUpdateForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Password Update</h4>
+                            </div>
+                            <br>
+                            <article style="width: 100%; text-align: center;">변경할
+                                비밀번호를 입력해주세요.</article>
+                            <br>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>PW</td>
+                                    <td><input type="password" class="update form-control" id="updatePw1"><input type="checkbox" id="pwupdatecheck" class="id_pw_check"></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <article id='pwupdatecheckmsg' style="font-size: 11px; display: inherit;"></article>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>확인</td>
+                                    <td><input type="password" class="update form-control" id="updatePw2"></td>
+
+                                </tr>
+                            </table>
+                            <div class="footer text-center">
+                                <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="확인">
+                            </div>
+                        </form>
+                        <div class="form" style="display: none;" id="notVerifyForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Not Verify</h4>
+                            </div>
+                            <br>
+                            <article style="width: 100%; text-align: center;">
+                                인증 되지 않은 사용자입니다.<br>메일 인증 후 이용해주세요.<br> <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" id="reSendMail" onclick="reSendMail()">메일을 받지 못하셨나요?</a>
+                            </article>
+                            <br> <input type="hidden" id="remailId">
+                            <div class="footer text-center">
+                                <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="getLoginForm()">로그인</a> <br>
+                            </div>
+                        </div>
+                        <form class="form" style="display: none;" id="forgotIdForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Forgot Your ID?</h4>
+                            </div>
+                            <br>
+                            <article style="width: 100%; text-align: center;">개인정보를
+                                입력해주세요.</article>
+                            <br>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>이름</td>
+                                    <td><input type="text" class="update form-control" id="forgotId_name"></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td><input type="text" class="update form-control" id="forgotId_email"></td>
+                                </tr>
+                            </table>
+                            <div class="footer text-center">
+                                <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="확인"><a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="getLoginForm()">로그인</a>
+                            </div>
+                        </form>
+                        <form class="form" style="display: none;" id="forgotPwForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Forgot Your PW?</h4>
+                            </div>
+                            <br>
+                            <article style="width: 100%; text-align: center;">개인정보를
+                                입력해주세요.</article>
+                            <br>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>아이디</td>
+                                    <td><input type="text" class="update form-control" id="forgotPw_id"></td>
+                                </tr>
+                                <tr>
+                                    <td>이름</td>
+                                    <td><input type="text" class="update form-control" id="forgotPw_name"></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td><input type="text" class="update form-control" id="forgotPw_email"></td>
+                                </tr>
+                            </table>
+                            <div class="footer text-center">
+                                <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="확인"><a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="getLoginForm()">로그인</a>
+                            </div>
+                        </form>
+                        <form class="form" style="display: none;" id="withdrawForm">
+                            <div class="card-header card-header-primary text-center">
+                                <h4 class="">Password Check</h4>
+                            </div>
+                            <br>
+                            <article style="width: 100%; text-align: center;">본인
+                                확인을 위해 비밀번호를 입력해주세요.</article>
+                            <br>
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>PW</td>
+                                    <td><input type="password" class="update form-control" id="withdrawPw1"></td>
+                                </tr>
+                                <tr>
+                                    <td>확인</td>
+                                    <td><input type="password" class="update form-control" id="withdrawPw2"></td>
+                                </tr>
+                            </table>
+                            <div class="footer text-center">
+                                <a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="">뒤로가기</a> <input type="submit" class="btn btn-primary btn-link btn-wd btn-lg" value="탈퇴하기">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            if (sessionStorage.getItem('loginId') == null) {
+                displayNone();
+                $('#userPage').addClass('col-md-6');
+                $('#userPage').addClass('col-lg-4');
+                $('#loginForm').css('display', 'block');
+                
+            } else if (sessionStorage.getItem('loginId') == 'admin') {
+                displayNone();
+                getAdminInfo();
+                
+            } else {
+                displayNone();
+                $('#userPage').addClass('col-md-6');
+                $('#userPage').addClass('col-lg-4');
+                getLoginInfo(sessionStorage.getItem('loginId'));
+                
+            }
+
+            $('#loginForm').submit(function() {
+
+                $.ajax({
+                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/login',
+                    type: 'POST',
+                    data: $('#loginForm').serialize(),
+                    success: function(data) {
+                        var str = data.split('_');
+                        if (data == 'admin') {
+                            var info = JSON.stringify(data);
+                            sessionStorage.setItem('loginId', data);
+                            displayNone();
+                            getAdminInfo();
+                        } else if (str[1] == 'notVerify') {
+                            getNotVerifyForm();
+                            $('#reSendMail').val(str[0]);
+                        } else if (data != 'fail') {
+                            var info = JSON.stringify(data);
+                            sessionStorage.setItem('loginId', data);
+                            displayNone();
+                            getLoginInfo(sessionStorage.getItem('loginId'));
+                        } else {
+                            alert('로그인에 실패했습니다.\n\n아이디와 비밀번호를 확인 후 다시 시도해주세요.');
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $('#id').focusin(function() {
+                $('#id').removeClass('back_img_red')
+            });
+        });
+
+        function getLoginInfo(id) {
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/mypage/' + id,
+                type: 'GET',
+                success: function(data) {
+                    if (data != null) {
+                        $('#myPage').css('display', 'block');
+                        $('#loginIdx').val(data.idx);
+                        sessionStorage.setItem('idx', (data.idx));
+                        $('#loginId').val(data.id);
+                        $('#loginName').val(data.name);
+                        $('#loginEmail').val(data.email);
+                        $('#loginPhone').val(data.phone);
+                        if (data.photo == null) {
+                            $('#loginPhoto').html('등록된 사진이 없습니다.');
+                        } else {
+                            var str = 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/uploadfile/userphoto/'
+                            $('#profileImage').attr('src', str + data.photo);
+                        }
+                    } else {
+
+                    }
+                }
+
+            });
+        }
+
+
+        function getAdminInfo() {
+            $('#adminPage').css('display', 'block');
+            $('#userPage').removeClass('col-lg-4');
+
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/admin/memberlist',
+                type: 'GET',
+                success: function(data) {
+                    //alert(JSON.stringify(data))
+                    var html = '';
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<tr>\n';
+                        html += '<td>' + data[i].idx + '</td>\n';
+                        html += '<td>' + data[i].id + '</td>\n';
+                        html += '<td>' + data[i].name + '</td>\n';
+                        html += '<td>' + data[i].email + '</td>\n';
+                        html += '<td>' + data[i].phone + '</td>\n';
+                        html += '<td>' + data[i].verify + '</td>\n';
+                        html += '</tr>\n';
+                    }
+                    $('#memberInfoTable').append(html);
+                }
+            });
+        }
+
+
+
+        $('#id').focusout(function() {
+            var idchk = $('#id').val();
+
+            var flag = patternId.test(idchk);
+            var test = patternId.test(idchk);
+            if (flag) {
+                $('#idcheckmsg').css('display', 'none');
+                $.ajax({
+                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/idCheck',
+                    type: 'GET',
+                    data: {
+                        id: $(this).val()
+                    },
+                    success: function(data) {
+                        if (data == 'Y') {
+                            $('#idcheck').prop('checked', true);
+                            $('#idcheckmsg').removeClass('color_red');
+                            $('#idcheckmsg').css('display', 'none');
+                        } else if (data == 'N') {
+                            $('#idcheck').prop('checked', false);
+                            $('#idcheckmsg').css('display', 'block');
+                            $('#idcheckmsg').html('이미 사용중인 아이디입니다.');
+                            $('#idcheckmsg').addClass('color_red');
+                        }
+                    }
+                });
+            } else {
+                $('#idcheck').prop('checked', false);
+                $('#idcheckmsg').css('display', 'block');
+                $('#idcheckmsg').html('5~12자의 영문 소문자, 숫자만 사용 가능합니다.');
+                $('#idcheckmsg').addClass('color_red');
+            }
+
+        });
+
+        $('#pw').focusout(function() {
+            if ($(this).val().length > 0) {
+                if (patternPw.test($(this).val()) && ($(this).val().length <= 16)) {
+                    $('#pwcheck').prop('checked', true);
+                    $('#pwcheckmsg').css('display', 'none');
+                    $('#pw').removeClass('back_img_red')
+
+                } else {
+                    $('#pwcheck').prop('checked', false);
+                    $('#pwcheckmsg').css('display', 'block');
+                    $('#pwcheckmsg').html('6~20자의 영문 대소문자와 최소 1개의 숫자 혹은 특수 문자를 포함해야 합니다.');
+                    $('#pwcheckmsg').addClass('color_red');
+                    $('#pw').addClass('back_img_red')
+                }
+            }
+        });
+
+        $('#email').focusout(function() {
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/emailCheck',
+                type: 'GET',
+                data: {
+                    email: $(this).val()
+                },
+                success: function(data) {
+                    if (data == 'Y') {
+                        $('#emailcheck').prop('checked', true);
+                        $('#emailcheckmsg').removeClass('color_red');
+                        $('#emailcheckmsg').css('display', 'none');
+                    } else if (data == 'N') {
+                        $('#emailcheck').prop('checked', false);
+                        $('#emailcheckmsg').css('display', 'block');
+                        $('#emailcheckmsg').html('이미 사용중인 메일입니다.');
+                        $('#emailcheckmsg').addClass('color_red');
+                    }
+                }
+            });
+        });
+
+
+        $('#signUpForm').submit(function() {
+            var pw1 = $('#pw').val();
+            var pw2 = $('#con_pw').val();
+            var id = $('#id').val();
+            var name = $('#name').val();
+            var email = $('#email').val();
+
+            if (id == '' || pw1 == '' || pw2 == '' || name == '' || email == '') {
+                alert('필수 항목을 입력해주세요.');
+                return false;
+            } else if (!$('#idcheck').prop('checked')) {
+                alert('중복된 아이디입니다.');
+                return false;
+            } else if (pw1 != pw2) {
+                alert('입력한 비밀번호가 서로 다릅니다.');
+                return false;
+            } else if (!$('#emailcheck').prop('checked')) {
+                alert('중복된 이메일입니다.');
+                return false;
+            } else {
+
+                $.ajax({
+                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/signup',
+                    type: 'POST',
+                    data: $('#signUpForm').serialize(),
+                    success: function(data) {
+                        if (data == 'success') {
+                            alert('가입성공\n\n메일을 통해 본인 인증을 진행해주세요.');
+                            displayNone();
+                            $('#loginForm').css('display', 'block');
+                        } else if (data == 'fail') {
+                            alert('가입에 실패했습니다.\n\n다시 한 번 확인해주세요.');
+                        }
+                    }
+                });
+                return false;
+            }
+        });
+
+
+        $('#updatePw1').focusout(function() {
+            if ($(this).val().length > 0) {
+                if (patternPw.test($(this).val()) && ($(this).val().length <= 16)) {
+                    $('#pwupdatecheck').prop('checked', true);
+                    $('#pwupdatecheckmsg').css('display', 'none');
+                    $('#updatePw1').removeClass('back_img_red')
+
+                } else {
+                    $('#pwupdatecheck').prop('checked', false);
+                    $('#pwupdatecheckmsg').css('display', 'block');
+                    $('#pwupdatecheckmsg').html('6~20자의 영문 대소문자와 최소 1개의 숫자<br> 혹은 특수 문자를 포함해야 합니다.');
+                    $('#pwupdatecheckmsg').addClass('color_red');
+                    $('#updatePw1').addClass('back_img_red')
+                }
+            }
+        });
+
+        $('#pwCheckForm').submit(function() {
+            var login_id = sessionStorage.getItem('loginId');
+            var login_pw = $('#chkPw1').val();
+            var confirm_pw = $('#chkPw2').val();
+
+            if (login_pw != confirm_pw) {
+                alert('입력한 두 값이 다릅니다.\n다시 입력해주세요.')
+                return false;
+            } else if (login_pw == confirm_pw) {
+
+                var list = {
+                    login_id: login_id,
+                    login_pw: login_pw
+                }
+
+                $.ajax({
+                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/pwcheck',
+                    type: 'POST',
+                    data: JSON.stringify(list),
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function(data) {
+                        if (data == 'success') {
+                            getPwUpdateForm();
+                        } else {
+                            alert('로그인 비밀번호가 올바르지 않습니다.\n\n다시 입력해주세요.');
+                        }
+                    }
+                })
+
+            }
+            return false;
+        });
+
+        $('#withdrawForm').submit(function() {
+
+            var login_id = sessionStorage.getItem('loginId');
+            var login_pw1 = $('#withdrawPw1').val();
+            var confirm_pw1 = $('#withdrawPw2').val();
+
+            var list = {
+                login_id: login_id,
+                login_pw: login_pw1
+            }
+            var idx = sessionStorage.getItem('idx');
+
+
+            if (login_pw1 != confirm_pw1) {
+                alert('입력한 두 값이 다릅니다.\n다시 입력해주세요.')
+                return false;
+            } else if (login_pw1 == confirm_pw1) {
+                $.ajax({
+                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/pwcheck',
+                    type: 'POST',
+                    data: JSON.stringify(list),
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function(data) {
+                        if (data == 'success') {
+                            if (confirm('정말 탈퇴하시겠습니까?')) {
+                                $.ajax({
+                                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/withdraw/' + idx,
+                                    type: 'DELETE',
+                                    success: function(data) {
+                                        if (data == 'success') {
+                                            alert('탈퇴 처리 완료.. ㅠㅠ')
+                                            logout();
+                                        }
+                                    }
+                                });
+
+                            } else {
+
+                            }
+                        } else {
+                            alert('로그인 비밀번호가 올바르지 않습니다.\n\n다시 입력해주세요.');
+                        }
+                    }
+                })
+
+            }
+            return false;
+        })
+
+
+        $('#updateForm').submit(function() {
+
+            var formData = new FormData();
+
+            var file = $('#updatePhoto')[0].files[0];
+
+            formData.append('updateIdx', $('#updateIdx').val());
+            formData.append('updateName', $('#updateName').val());
+            formData.append('updateEmail', $('#updateEmail').val());
+            formData.append('updatePhone', $('#updatePhone').val());
+            formData.append('updatePhoto', file);
+
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/update',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    if (data == 'success') {
+                        alert('수정완료');
+                        displayNone();
+                        $('#mypage').css('display', 'block');
+                        getLoginInfo(sessionStorage.getItem('loginId'));
+                    }
+                }
+            });
+            return false;
+        });
+
+
+        $('#pwUpdateForm').submit(function() {
+            var updatePw1 = $('#updatePw1').val();
+            var updatePw2 = $('#updatePw2').val();
+
+            var list = {
+                updateIdx: $('#updateIdx').val(),
+                updatePw1
+            }
+
+            if (updatePw1 != updatePw2) {
+                alert('입력한 두 값이 다릅니다.\n다시 입력해주세요.')
+            } else {
+
+                $.ajax({
+                    url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/pwupdate',
+                    type: 'PUT',
+                    data: JSON.stringify(list),
+                    contentType: 'application/json; charset=UTF-8',
+                    success: function(data) {
+                        if (data == 'success') {
+                            displayNone();
+                            getLoginInfo(sessionStorage.getItem('loginId'));
+                            alert('비밀번호 변경 성공');
+                        } else {
+                            alert('변경되지 않았습니다.\n다시 시도해주세요.');
+                        }
+                    }
+                })
+            }
+        });
+
+        function reSendMail() {
+
+            var id = $('#reSendMail').val();
+
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/remail',
+                type: 'GET',
+                data: {
+                    id: id
+                },
+                success: function(data) {
+                    if (data = 'success') {
+                        alert('메일을 재전송했습니다.\n확인 후 인증해주세요.');
+                    }
+                }
+            });
+        };
+
+        $('#forgotIdForm').submit(function() {
+            var name = $('#forgotId_name').val();
+            var email = $('#forgotId_email').val();
+
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/forgotId',
+                type: 'GET',
+                data: {
+                    name: name,
+                    email: email
+                },
+                success: function(data) {
+                    if (data == 'fail' || data == '') {
+                        alert('일치하는 계정 정보가 없습니다.\n\n확인 후 다시 이용해주세요.');
+                    } else if (data == 'success') {
+                        alert('이메일로 아이디를 전송해드렸습니다.')
+                    }
+                }
+            });
+        });
+
+        $('#forgotPwForm').submit(function() {
+            var id = $('#forgotPw_id').val();
+            var name = $('#forgotPw_name').val();
+            var email = $('#forgotPw_email').val();
+
+            $.ajax({
+                url: 'http://ec2-54-180-121-110.ap-northeast-2.compute.amazonaws.com:8080/udo/member/forgotPw',
+                type: 'GET',
+                data: {
+                    id: id,
+                    name: name,
+                    email: email
+                },
+                success: function(data) {
+                    if (data == 'fail' || data == '') {
+                        alert('일치하는 계정 정보가 없습니다.\n\n확인 후 다시 이용해주세요.');
+                    } else if (data == 'success') {
+                        alert('이메일로 임시 비밀번호를 전송해드렸습니다.')
+                    }
+                }
+            });
+        });
+
+
+        function forgotAccount() {
+
+            var html = '<a href = "#" class = "btn btn-primary btn-link btn-wd btn-lg" onclick = "getForgotIdForm()";> 아이디 찾기</a>';
+            html += '<br><a href = "#" class = "btn btn-primary btn-link btn-wd btn-lg" onclick = "getForgotPwForm()";> 비밀번호 찾기</a>';
+            $('#forgotAccount').html(html);
+        }
+
+        function getLoginForm() {
+            displayNone();
+
+            var html = '<a href="#" class="btn btn-primary btn-link btn-wd btn-lg" onclick="forgotAccount()">계정을 분실하셨나요?</a>'
+            $('#forgotAccount').html(html);
+            $('#loginForm').css('display', 'block');
+        };
+
+        function getForgotIdForm() {
+            displayNone();
+            $('#forgotIdForm').css('display', 'block');
+        }
+
+        function getForgotPwForm() {
+            displayNone();
+            $('#forgotPwForm').css('display', 'block');
+        }
+
+        function getSignUpForm() {
+            displayNone();
+            $('#signUpForm').css('display', 'block');
+        };
+
+        function getUpdateForm() {
+            displayNone();
+            $('#updateForm').css('display', 'block');
+            $('#updateIdx').val($('#loginIdx').val());
+            $('#updateName').val($('#loginName').val());
+            $('#updateEmail').val($('#loginEmail').val());
+            $('#updatePhone').val($('#loginPhone').val());
+        }
+
+        function getPwUpdateForm() {
+            displayNone();
+            $('#pwUpdateForm').css('display', 'block');
+        }
+
+        function getPwCheckForm() {
+            displayNone();
+            $('#pwCheckForm').css('display', 'block');
+        }
+
+        function getNotVerifyForm() {
+            displayNone();
+            $('#notVerifyForm').css('display', 'block');
+        }
+
+        function getwithdrawForm() {
+            displayNone();
+            $('#withdrawForm').css('display', 'block');
+        }
+
+        function displayNone() {
+            $('#loginForm').css('display', 'none');
+            $('#signUpForm').css('display', 'none');
+            $('#myPage').css('display', 'none');
+            $('#myPageKakao').css('display', 'none');
+            $('#updateForm').css('display', 'none');
+            $('#pwCheckForm').css('display', 'none');
+            $('#pwUpdateForm').css('display', 'none');
+            $('#notVerifyForm').css('display', 'none');
+            $('#forgotIdForm').css('display', 'none');
+            $('#forgotPwForm').css('display', 'none');
+            $('#withdrawForm').css('display', 'none');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('loginId');
+            sessionStorage.removeItem('idx');
+            displayNone();
+            location.reload();
+        }
+
+        function getMyPageKakao() {
+            displayNone();
+            $('#myPageKakao').css('display', 'block');
+            statusWithKakao();
+        }
+
+
+        /*카카오 로그인..*/
+
+        Kakao.init('2bd49b0e77d3013bdb03cd692b44b80f');
+
+        function loginWithKakao() {
+            Kakao.Auth.login({
+                success: function(authObj) {
+                    alert(JSON.stringify(authObj));
+                    alert('로그인 되었습니다.');
+                    getMyPageKakao();
+                },
+                fail: function(error) {
+                    alert(JSON.stringify(error))
+                }
+            });
+        }
+
+        function logoutWithKakao() {
+            Kakao.Auth.logout(function() {
+                displayNone();
+                location.reload();
+            });
+        }
+
+        function infoWithKakao() {
+            Kakao.API.request({
+                url: '/v2/user/me',
+                success: function(res) {
+                    alert(JSON.stringify(res));
+                    alert(res.propertise.nickname);
+                    alert(res.propertise.profile_image);
+                    alert(res.propertise.thumnail_imgage);
+                    alert(res.kakao_account.email);
+                    $('#loginPhotoKakao').val(res.propertise.profile_image)
+                    $('#loginIdKakao').val(res.kakao_account.email)
+
+
+                },
+                fail: function(error) {
+                    alert(JSON.stringify(error));
+                }
+            });
+        }
+
+        function statusWithKakao() {
+            Kakao.Auth.getStatusInfo(function(statusObj) {
+                if (statusObj.status == 'connected') {
+                    var user = statusObj.user;
+                    $('#loginNameKakao').val(user.properties.nickname)
+                    $('#loginEmailKakao').val(user.kakao_account.email)
+                    $('#kakaoImage').attr('src', user.properties.profile_image)
+                } else {
+                    alert('로그인이 필요합니다.');
+                }
+            });
+        }
+    </script>
+
+</body></html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Modern Business - Start Bootstrap Template</title>
+  <!-- Bootstrap core CSS -->
+  <link href="http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/css/modern-business.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">우도에서 뭐하지?</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="loginForm.html">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="services.html">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item active dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Portfolio
+            </a>
+    
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Blog
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+              <a class="dropdown-item" href="blog-home-1.html">Blog Home 1</a>
+              <a class="dropdown-item" href="blog-home-2.html">Blog Home 2</a>
+              <a class="dropdown-item" href="blog-post.html">Blog Post</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Other Pages
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
+              <a class="dropdown-item" href="full-width.html">Full Width Page</a>
+              <a class="dropdown-item" href="sidebar.html">Sidebar Page</a>
+              <a class="dropdown-item" href="faq.html">FAQ</a>
+              <a class="dropdown-item" href="404.html">404</a>
+              <a class="dropdown-item" href="pricing.html">Pricing Table</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <h1 class="mt-4 mb-3">식당 리스트
+    </h1>
+    
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="index.html">Home</a>
+      </li>
+      <li class="breadcrumb-item active">restaurant</li>
+    </ol>
+    
+<div id="map" style="width:100%;height:350px;"></div>
+    <div class="row">
+     
+      
+    </div>
+    
+    <!-- Pagination -->
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+    <!-- 카카오 API -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=96674cd776b56b9f20d5cec4e0c3a6ff&libraries=services,clusterer,drawing"></script>
+  
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    var idx = sessionStorage.getItem('idx');
+//    var loginId = sessionStorage.getItem('loginId');
+    $(document).ready(function(){
+//        idx = sessionStorage.getItem('idx');
+//        loginId = sessionStorage.getItem('loginId');
+        listAll();
+        markAddress('우도','우도');
+    });
+    
+//    const idx = 20;
+    
+    function writeCmt(r_idx){
+        var html = '';
+        html += '<div id="writeBox'+r_idx+'" class="row" style="display:block; border:1px solid #bbb">';
+        html += '<strong>리뷰쓰기</strong>';
+        html += '<form id="writeCmt'+r_idx+'" onsubmit="return false" method="post" enctype="multipart/form-data">';
+        html += '<input type="hidden" value="'+idx+'" id="idx" name="idx">';
+        html += '<input type="hidden" id="r_idx" name="r_idx" value="'+r_idx+'">';
+        html += '<div class="form-group col-lg-11">';
+        html += '<div class="custom-file">'
+        html += '<label for="r_c_photo" class="custom-file-label"><label>';
+        html += '<input type="file" class="form-controll-file" id="r_c_photo" name="r_c_photo"></div></div>';
+        html += '<div class="form-group col-lg-11"><label for="r_c_comment">내용</label><textarea class="form-control"  placeholder="내용을 입력하세요." required id="r_c_comment" name="r_c_comment" col="100"></textarea></div>';
+        html += '<div class="form-group col-lg-3"><label for="r_c_star">평점</label><input type="range" class="custom-range" name="r_c_star" id="r_c_star" min="1" max="5"></div>';
+        html += '<div class="form-group center"><input type="submit" class="btn btn-lg btn-primary" value="작성완료" onclick="submitForm('+r_idx+')"></div>';
+        html += '</form>  ';
+        html += '</div>';
+//        console.log($(this).parent());
+        $('#cmtList'+r_idx).html(html);
+    } 
+    
+    
+    
+    function submitForm(r_idx){
+        console.log("submitForm : "+r_idx);
+        
+        var formData = new FormData();
+        var file = $('#r_c_photo')[0].files[0];
+        formData.append("r_c_comment",$('#r_c_comment').val());
+        formData.append("r_c_star",$('#r_c_star').val());
+        if(file != undefined){
+            formData.append("r_c_photo",file);   
+        }
+        formData.append("r_idx", r_idx);
+        formData.append("idx", idx);
+        
+        console.log(formData.get("r_c_star"));
+        console.log(r_idx);
+        $.ajax({
+            type : 'POST',
+            enctype: 'multipart/form-data',
+            url : 'http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/restaurant/comment',
+            contentType : false,
+            processData : false,
+            cache : false,
+            data : formData,
+            success : function(data){
+                console.log("폼작성성공!");
+                $('#writeBox'+r_idx).css('display','none');
+                cmtList(r_idx);
+            },
+            error : function(){
+                console.log("오류");
+            }
+        });
+        
+    }
+    
+    function deleteCmt(r_idx,r_c_idx){
+        var comfirm = confirm("삭제하시겠습니까?");
+        if(comfirm){
+            $.ajax({
+                type: 'DELETE',
+                url: 'http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/restaurant/comment/'+r_c_idx,
+                contentType : 'application/json; charset=utf-8',
+                success : function(data){
+                    if(data == "success"){
+                        alert("삭제를 완료했습니다.");
+                        cmtList(r_idx);
+                    }                
+                }
+            });
+        }
+    }
+    function cmtList(r_idx){
+        $.ajax({
+            url : 'http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/restaurant/comment/'+r_idx,
+            contentType : 'application/json; charset=utf-8',
+            dataType : 'json',
+            type : 'get',
+            success : function(data){
+                var html = '';
+                for(var j=0;j<data.length;j++){
+                    var date = new Date(data[j].r_c_date);
+                    var year = date.getFullYear();
+                    var month = date.getMonth()+1;
+                    var day = date.getDate();
+                    
+                    console.log(date.getDate());
+                    html += '<div id="#cmtCard'+data[j].r_c_idx+'" class="col-lg-11 card-">';
+                    html += '<h4 class="card-title">';
+//                    html += data[j].idx +'<br>';
+                    html += data[j].r_c_idx;
+                    html += '</h4>';
+//                    html += '<p><span>작성자 : '+loginId+'</span></p>'
+                    html += '<p><img src=\"http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/uploadfile/'+data[j].r_c_photo+'\" width="300"></p>';
+                    html += '<p class="card-text">'+data[j].r_c_comment+'<br>';
+                    html += '<p><strong>별점 </strong>'+data[j].r_c_star+'<br><strong>작성날짜 </strong>'+year+'/'+month+'/'+day+'</p>';
+                    console.log(idx + ','+data[j].idx);
+                    if(idx == data[j].idx){
+                        html += '<p><button type="button" class="btn btn-outline-primary btn-sm" onclick="editCmt('+data[j].r_idx+')">수정</button>';
+                         html += '<button type="button" class="btn btn-outline-primary btn-sm" onclick="deleteCmt('+data[j].r_idx+','+data[j].r_c_idx+')">삭제</button></p>';
+                    }
+                    html += '<div id="editBox'+data[j].r_idx+'" class="row" style="display:none; border:1px solid #bbb">';
+                    html += '<strong>리뷰 수정</strong>';
+                    html += '<form id="updateCmt'+data[j].r_c_idx+'" onsubmit="return false" method="post" enctype="multipart/form-data">';
+                    html += '<input type="hidden" value="'+data[j].idx+'" id="idx'+data[j].r_c_idx+'" name="idx">';
+                    html += '<input type="hidden" id="r_idx'+data[j].r_c_idx+'" value="'+data[j].r_idx+'" name="r_idx">';
+                    html += '<div class="form-group col-lg-11">';
+                    html += '<div class="custom-file">'
+//                    html += '<label for="r_c_photo" class="custom-file-label">사진을 선택하세요.</label>';
+                    html += '<input type="file" class="custom-file-input" id="r_c_photo'+data[j].r_c_idx+'" value="'+data[j].r_c_photo+'" name="r_c_photo"><input type="hidden" name="oldFile" id="oldFile'+data[j].r_c_idx+'" value="'+data[j].r_c_photo+'"></div></div>';
+                    html += '<div class="form-group col-lg-11"><label for="r_c_comment">내용</label><textarea class="form-control" required id="r_c_comment'+data[j].r_c_idx+'" name="r_c_comment" col="100">'+data[j].r_c_comment+'</textarea></div>';
+                    html += '<div class="form-group col-lg-3"><label for="r_c_star">평점</label><input type="range" class="custom-range" name="r_c_star" id="r_c_star'+data[j].r_c_idx+'" min="1" max="5" value="'+data[j].r_c_star+'"></div>';
+                    html += '<div class="form-group"><input type="submit" value="작성완료" onclick="editForm('+data[j].r_c_idx+','+data[j].r_idx+');"></div>';
+                    html += '</form>';
+                    html += '</div>';
+                    html += '</div>';
+                    html += '</div>';
+                    
+                }
+                $('#writeForm'+r_idx).html(html);
+            }
+           
+        });
+    }
+    function editCmt(r_idx){
+//        console.log($(item).parent().next()[0]);
+//        console.log($(item).hasClass('active'));
+////        console.log($($(item).parent().parent().children()[4]));
+//        if($(item).hasClass('active')){
+           $('#editBox'+r_idx).css("display","block");
+//        } else{
+//            $(item).parent().next().css("display", "none");
+//        }
+        
+        
+    }
+ 
+    function editForm(r_c_idx,r_idx){
+        var formData = new FormData();
+        var file = $('#r_c_photo'+r_c_idx)[0].files[0];
+        var oldFile = $('#oldFile'+r_c_idx).files;
+        formData.append("r_c_comment",$('#r_c_comment'+r_c_idx).val());
+        formData.append("r_c_star",$('#r_c_star'+r_c_idx).val());
+        if(file != undefined){
+            formData.append("r_c_photo",file);
+            formData.append("oldFile",oldFile);   
+            console.log(oldFile);
+        }
+        formData.append("r_idx", $('#r_idx'+r_c_idx).val());
+        formData.append("idx", $('#idx'+r_c_idx).val());
+        $.ajax({
+           type : 'POST',
+            enctype: 'multipart/form-data',
+            url : 'http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/restaurant/comment/'+r_c_idx,
+            contentType : false,
+            processData : false,
+//            contentType : 'application/json; charset=utf-8',
+            cache : false,
+            data : formData,
+            success : function(data){
+                console.log("폼수정성공!");
+                cmtList(r_idx);
+//                console.log(formData.r_idx);
+            },
+            error : function(){
+                console.log("수정오류");
+            }
+        });
+        
+    }
+    function listAll(pgNum){
+        console.log($('#searchType').val());
+        console.log($('#keyword').val());
+        $.ajax({
+            url : 'http://ec2-13-209-40-173.ap-northeast-2.compute.amazonaws.com:8080/project-udo/restaurant/list',
+            contentType : 'application/json; charset=utf-8',
+            data : {page : pgNum, searchType : $('#searchType').val(), keyword : $('#keyword').val()},
+            dataType : 'json',
+            type : 'GET',
+            success : function(data){
+                var $row = $('.row')[0];
+                var list = data.restInfoList;
+                var html = '';
+                if(list.length>0){
+                    for(var i=0;i<list.length;i++){
+//                        console.log(data[i]);
+//                        var address = list[i].r_address.replace(/ /gi,"&nbsp;");
+//                        console.log(address);
+                        html += '<div class="col-lg-12 col-sm-12 portfolio-item">';
+                        html += '<div class="card h-100">';
+                        html += '<div class="card-body">';
+                        html += '<h4 class="card-title">';
+                        html += '<a href="#" onclick="markAddress(\''+list[i].r_address+'\',\''+list[i].r_name+'\')">'+list[i].r_name+'</a>';
+                        html += '</h4>';
+                        console.log(list[i].r_pnum);
+                        html += '<p class="card-text">'+list[i].r_address+'<br>'+list[i].r_pnum+'<br>';
+                        html += '<button type="button" onclick="cmtList('+list[i].r_idx+')" class="btn btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">리뷰 보기</button>';
+                        html += '<button type="button" onclick="writeCmt('+list[i].r_idx+')" class="btn btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">리뷰 작성</button>'+'</p>'; 
+    //                    html += '<button type="button" onclick="writeCmt('+list[i].r_idx+')">리뷰 작성</button>'+'</p>'; 
+                        html += '<div id="writeForm'+list[i].r_idx+'" class="writeForm col-6 mt-3" >';
+                        html += '</div>';
+                        html += '<div id="cmtList'+list[i].r_idx+'" class="cmtList mt-3" >';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                }
+                html += '<div class="col-lg-12 input-group">';
+                html += '<form id="searchBox" class="input-group-prepend" onsubmit="return false" class="float-lg-right">';
+                html += '<select id="searchType" class="custom-select"><option value="r_name">식당명</option><option value="r_address">주소</option></select>';
+                html += '<input type="text" class="control" name="keyword" id="keyword">';
+                html += '<input type="submit" class="btn btn-primary" value="검색" onclick="listAll('+pgNum+')">';
+                html += '</form>';
+                html += '</div>';
+                var paging = '';
+                for(var j=1;j<=data.pageTotalCount;j++){
+                    paging += '<li class="page-item"><a class="page-link" href="#" onclick="listAll('+j+')">'+j+'</a></li>';
+                }
+                $('.row').html(html);
+                
+                $('.pagination').html(paging);
+            }
+            
+        });
+    }
+    
+    function markAddress(r_address,r_name){
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨
+            };  
+
+            // 지도를 생성합니다    
+            var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch(r_address, function(result, status) {
+
+                // 정상적으로 검색이 완료됐으면 
+                 if (status === kakao.maps.services.Status.OK) {
+
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">'+r_name+'</div>'
+                    });
+                    infowindow.open(map, marker);
+
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                } 
+            });    
+        }
+</script>
+</body>
+
+</html>
