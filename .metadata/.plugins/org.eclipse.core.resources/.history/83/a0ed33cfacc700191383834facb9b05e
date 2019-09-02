@@ -1,0 +1,5 @@
+package com.wad.udo.rv.dao;
+
+public interface RvSessionDao {
+
+}

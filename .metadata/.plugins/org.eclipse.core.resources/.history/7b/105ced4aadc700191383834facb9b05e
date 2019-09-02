@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wad.udo.rv.dao.RvSessionDao">
+
+<!-- Mapping 설정 -->
+
+<!-- 예약 생성 -->
+<insert id=""></insert>
+
+<!-- 예약 수정 -->
+
+
+<!-- 예약 삭제 -->
+
+
+<!--id를 통한 예약정보 보여주기  -->
+
+
+<!--전체 예약정보 보여주기  -->

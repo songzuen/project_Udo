@@ -1,0 +1,13 @@
+package com.wad.udo.rv.dao;
+
+import com.wad.udo.rv.domain.RvInfo;
+
+public interface RvSessionDao {
+
+	public int insertRv(RvInfo rvInfo);
+	public int updateRv(RvInfo rvInfo);
+	public int deleteRv();
+	public RvInfo selectListByIdx();
+	public RvInfo selectList();
+	
+}

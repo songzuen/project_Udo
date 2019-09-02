@@ -1,0 +1,35 @@
+package com.wad.udo.rv.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.wad.udo.rv.domain.WeekInfo;
+import com.wad.udo.rv.service.DateService;
+
+@RestController("rv/date")
+public class DateController {
+
+	@Autowired
+	private DateService service;
+	
+	@CrossOrigin
+	@GetMapping
+	public ResponseEntity<List<WeekInfo>> getWeek() {
+		
+		List<WeekInfo> weekInfoList = service.getWeekInfo();
+		
+		for(WeekInfo w : weekInfoList) {
+			System.out.println(w);
+		}
+		
+		ResponseEntity<List<WeekInfo>> entity = new ResponseEntity<List<WeekInfo>>(weekInfoList, HttpStatus.OK);
+		
+		return entity;
+	}
+}

@@ -1,0 +1,76 @@
+package com.wad.udo.rv.domain;
+
+public class Date {
+
+	private int day;
+	private String date;
+	
+	public int getDay() {
+		return day;
+	}
+
+	public void setDay(int day) {
+		this.day = day;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(int date) {
+		this.date = stringDay(date);
+	}
+		
+	public String stringDay(int date) {
+		
+		String sDate=null;
+		
+		switch (date) {
+			case 1:
+				sDate = "Sun";
+			break;
+				
+			case 2:
+				sDate = "Mon";
+			break;
+			
+			case 3:
+				sDate = "Tue";
+			break;
+			
+			case 4:
+				sDate = "Wed";
+			break;
+			
+			case 5:
+				sDate = "Thu";
+			break;
+			
+			case 6:
+				sDate = "Fri";
+			break;
+			
+			case 7:
+				sDate = "Sat";
+			break;
+		}
+		return sDate;
+		}
+
+	public Date(int day, String date) {
+		this.day = day;
+		this.date = date;
+	}
+
+	public Date(int day, int date) {
+		this.day = day;
+		this.date = stringDay(date);
+	}
+	
+	public Date() {
+
+	}
+	
+	
+	
+}

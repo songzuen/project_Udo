@@ -1,0 +1,8 @@
+package com.wad.udo.rv.domain;
+
+public class ChkRv {
+
+	private boolean[] chkRv;
+	
+	
+}

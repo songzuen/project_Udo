@@ -1,0 +1,30 @@
+package com.wad.udo.rv.service;
+
+import java.util.List;
+
+import javax.sound.sampled.ReverbType;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.wad.udo.rv.dao.RvSessionDao;
+import com.wad.udo.rv.domain.RvInfo;
+
+@Service("listService")
+public class ListService {
+
+	@Autowired
+	private SqlSessionTemplate template;
+	
+	private RvSessionDao dao;
+	
+	public List<RvInfo> selectAllList() {
+		
+		dao = template.getMapper(RvSessionDao.class);
+		
+		List<RvInfo> list = dao.selectList();
+		
+		return list;
+	}
+}
